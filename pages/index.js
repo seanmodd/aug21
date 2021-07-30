@@ -1,37 +1,66 @@
 import {
   Link as ChakraLink,
-  Text,
-  Code,
-  List,
-  ListIcon,
-  ListItem,
   Heading,
+  useColorMode,
   VStack,
   Box,
+  Button,
 } from '@chakra-ui/react';
-import { CheckCircleIcon, LinkIcon } from '@chakra-ui/icons';
-import { Hero } from '../components/Hero';
-import { Container } from '../components/Container';
-import { Main } from '../components/Main';
-import { DarkModeSwitch } from '../components/DarkModeSwitch';
-import { CTA } from '../components/CTA';
-import { Footer } from '../components/Footer';
+import { useState } from 'react';
+import NewExpense from '../components/NewExpense/NewExpense';
+import Expenses from '../components/Expenses/Expenses';
 
-const Index = () => (
-  <VStack>
-    <Heading fontSize="6xl">Here</Heading>
+const DUMMY_EXPENSES = [
+  {
+    id: 'e1',
+    title: 'Toilet Paper',
+    amount: 94.12,
+    date: new Date(2020, 7, 14),
+  },
+  { id: 'e2', title: 'New TV', amount: 799.49, date: new Date(2021, 2, 12) },
+  {
+    id: 'e3',
+    title: 'Car Insurance',
+    amount: 294.67,
+    date: new Date(2021, 2, 28),
+  },
+  {
+    id: 'e4',
+    title: 'New Desk (Wooden)',
+    amount: 450,
+    date: new Date(2021, 5, 12),
+  },
+];
 
-    <Box
-      bg="tomato"
-      color="gray.50"
-      fontSize="4xl"
-      fontWeight="extrabold"
-      bgGradient="linear(to-l, #7928CA,#FF0080)"
-      bgClip="text"
-    >
-      Here
-    </Box>
-  </VStack>
-);
+const Index = () => {
+  //! this is just for dark mode...
+  const { colorMode, toggleColorMode } = useColorMode();
+  const bgColor = {
+    light: 'blackbg',
+    dark: 'whitebg',
+  };
+  const textColor = {
+    light: 'whitebg',
+    dark: 'blackbg',
+  };
+  //!
+
+  const [expenses, setExpenses] = useState(DUMMY_EXPENSES);
+
+  const addExpenseHandler = (expense) => {
+    console.log('In App.js');
+    console.log(expense);
+    setExpenses((prev) => [...prev, expense]);
+  };
+  return (
+    <VStack minHeight="100vh" bg={bgColor[colorMode]}>
+      <Heading py={20} color={textColor[colorMode]} fontSize="6xl">
+        Welcome to React
+      </Heading>
+      <NewExpense onAddExpense={addExpenseHandler} />
+      <Expenses items={expenses} />
+    </VStack>
+  );
+};
 
 export default Index;
